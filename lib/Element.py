@@ -1,20 +1,21 @@
+#!/usr/bin/python3
 import random
 
 class Element:
-	def __init__( self, type):
-		if type == 'text':
-			self.type = 'text'
-		else if type == 'image':
-			self.type = 'image'
+	def __init__( self, frmt):
+		if frmt == 'text':
+			self.frmt = 'text'
+		elif frmt == 'image':
+			self.frmt = 'image'
 		else:
 			raise
 		self.content = ''
 		self.location = ''
 		random.seed()
-		self.id = random.getrandbits(32)
-	def renderElement():
+		self.id = str( random.getrandbits(32))
+	def render( self):
 		ele = {}
-		ele['type'] = self.type
+		ele['frmt'] = self.frmt
 		ele['content'] = self.content
 		ele['location'] = self.location
 		ele['id'] = self.id
