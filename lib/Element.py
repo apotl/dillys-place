@@ -1,6 +1,11 @@
 #!/usr/bin/python3
 import random
 
+class ElementError( Exception):
+
+	def __init__( self, reason):
+		self.reason = 'ERROR in Element.py: ' + reason
+
 class Element:
 	def __init__( self, frmt):
 		if frmt == 'text':
@@ -8,7 +13,7 @@ class Element:
 		elif frmt == 'image':
 			self.frmt = 'image'
 		else:
-			raise
+			raise ElementError( 'Invalid element type')
 		self.content = ''
 		self.location = ''
 		random.seed()
