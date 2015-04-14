@@ -3,6 +3,7 @@ from lib.Element import *
 from lib.Page import *
 from lib.Site import *
 import random
+import shutil
 import pprint
 
 random.seed()
@@ -52,6 +53,13 @@ def checkElement_py():
 		print( why.reason)
 	print( 'render() OK.')
 
+	print( 'Testing load()...')
+	try:
+		test_element.load( makeDummyEle().render())
+	except ElementError as why:
+		print( why.reason)
+	print( 'load() OK.')
+
 def checkPage_py():
 	print( 'Testing instantiation...')
 	try:
@@ -90,17 +98,12 @@ def checkPage_py():
 	except PageError as why:
 		print( why.reason)
 	print( 'remove() OK.')
+	shutil.rmtree( test_page.name)
 	
-	print( 'Testing destruction...')
-	del test_page
-	print( 'Destruction OK.')
-
 def checkSite_py():
 	print( 'Testing instantiation...')
 	try:
-		name = str( random.getrandbits( 8))
-		print( 'Site name will be ' + name)
-		test_site = Site( name)
+		test_site = Site( "test_site")
 	except SiteError as why:
 		print( why.reason)
 	print( 'Instantiation OK.')
@@ -112,21 +115,17 @@ def checkSite_py():
 	print( 'add() OK.')
 
 	print( 'Testing render()...')
-	pprint.pprint( test_site.render())
-	for page in test_site.render():
-		pprint.pprint( test_site.render()[page].render())
+	test_site.render()
+#	for page in test_site.render():
+#		pprint.pprint( test_site.render()[page].render())
 	print( 'render() OK.')
 	
-#	print( 'Testing remove()...')
-#	try:
-#		test_site.remove( test_page.name)
-#	except SiteError as why:
-#		print( why.reason)
-#	print( 'remove() OK.')
-
-	print( 'Testing destruction...')
-	del test_site
-	print( 'Destruction OK.')
+	print( 'Testing remove()...')
+	try:
+		test_site.remove( test_page.name)
+	except SiteError as why:
+		print( why.reason)
+	print( 'remove() OK.')
 
 checking = True
 while checking == True:

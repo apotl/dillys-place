@@ -25,4 +25,11 @@ class Element:
 		ele['location'] = self.location
 		ele['id'] = self.id
 		return ele
-		
+	def load( self, ele_dict):
+		try:
+			self.frmt = ele_dict['frmt']
+			self.content = ele_dict['content']
+			self.location = ele_dict['location']
+			self.id = ele_dict['id']
+		except:
+			raise ElementError( 'given element dict is invalid')

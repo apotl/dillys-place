@@ -48,9 +48,3 @@ class Page:
 		for element in os.listdir( self.name):
 			dict_render[element] = self.retrieve( element)
 		return dict_render
-	
-	def __del__( self):
-		to_rm = self.render()
-		for element in to_rm:
-			self.remove( to_rm.get( element)['id'])
-		os.rmdir( self.name)
