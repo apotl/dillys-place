@@ -22,10 +22,10 @@ def makeDummyEle():
 	test_element.location = str( random.getrandbits( 8))
 	return test_element
 
-def makeDummyPage():
+def makeDummyPage( site):
 	name = random.getrandbits( 16)
 	print( 'Page name will be ' + str( name))
-	test_page = Page( str( name))
+	test_page = Page( site + str( name))
 	return test_page
 
 def checkElement_py():
@@ -47,7 +47,7 @@ def checkElement_py():
 
 	print( 'Testing render()...')
 	try:
-		pprint.pprint( makeDummyEle.render())
+		pprint.pprint( makeDummyEle().render())
 	except ElementError as why:
 		print( why.reason)
 	print( 'render() OK.')
@@ -55,7 +55,7 @@ def checkElement_py():
 def checkPage_py():
 	print( 'Testing instantiation...')
 	try:
-		test_page = makeDummyPage()
+		test_page = makeDummyPage( '')
 	except PageError as why:
 		print( why.reason)
 	print( 'Instantiation OK.')
@@ -106,7 +106,7 @@ def checkSite_py():
 	print( 'Instantiation OK.')
 
 	print( 'Testing add()...')
-	test_page = makeDummyPage()
+	test_page = makeDummyPage( test_site.name + '/')
 	test_page.add( makeDummyEle())
 	test_site.add( test_page)
 	print( 'add() OK.')
@@ -114,7 +114,6 @@ def checkSite_py():
 	print( 'Testing render()...')
 	pprint.pprint( test_site.render())
 	for page in test_site.render():
-		print( page)
 		pprint.pprint( test_site.render()[page].render())
 	print( 'render() OK.')
 	
@@ -124,6 +123,10 @@ def checkSite_py():
 #	except SiteError as why:
 #		print( why.reason)
 #	print( 'remove() OK.')
+
+	print( 'Testing destruction...')
+	del test_site
+	print( 'Destruction OK.')
 
 checking = True
 while checking == True:

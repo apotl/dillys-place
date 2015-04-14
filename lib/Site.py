@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import os.path
+import pprint
+import shutil
 from lib.Page import *
 
 class SiteError( Exception):
@@ -21,6 +23,7 @@ class Site:
 
 	def add( self, page):
 		self.tree[page.name] = page
+		pprint.pprint( self.tree[page.name].render())
 
 	def render( self):
 		return self.tree
@@ -30,3 +33,7 @@ class Site:
 			del self.tree[name]
 		except:
 			raise SiteError( 'Could not remove page successfully')
+
+	def __del__( self):
+		shutil.rmtree( self.name)
+

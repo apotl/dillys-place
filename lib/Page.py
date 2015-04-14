@@ -12,8 +12,6 @@ class Page:
 		try:
 			if not os.path.isdir( name):
 				os.mkdir( name)
-			else:
-				raise PageError( 'New page cannot be an existing directory')
 		except:
 			raise PageError( 'Could not create a directory with that name')
 		self.name = name
@@ -52,6 +50,7 @@ class Page:
 		return dict_render
 	
 	def __del__( self):
-		for element in self.render():
-			self.remove( element.id)
+		to_rm = self.render()
+		for element in to_rm:
+			self.remove( to_rm.get( element)['id'])
 		os.rmdir( self.name)
