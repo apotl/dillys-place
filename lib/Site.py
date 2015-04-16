@@ -21,7 +21,7 @@ class Site:
 		page_list = os.listdir( self.name)
 		page_dict = {}
 		for page in page_list:
-			page_dict[self.name + '/' + page] = os.listdir( self.name + '/' + page)
+			page_dict[self.name + page] = os.listdir( self.name + '/' + page)
 		for page_name in page_dict:
 			page = Page( page_name)
 			for element in page_dict[page_name]:

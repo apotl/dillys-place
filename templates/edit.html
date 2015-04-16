@@ -1,0 +1,13 @@
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="{{ url_for('static', filename='edit.js') }}"></script>
+</head>
+<body>
+	<script>document.write( printEditList( {{ pages|tojson }}))</script>
+	<form method=post action="/edit">
+		<table><tr><td><p>Name of new page:</p></td><td><dl>
+			{{ form.page_name }}
+		</dl></td>
+		<td><input type=submit value="Add Page"></td></tr></table>
+	</form>
+</body>
