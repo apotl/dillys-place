@@ -1,0 +1,11 @@
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="{{ url_for('static', filename='edit.js') }}"></script>
+</head>
+<body>
+	<form method=post action="/edit/{{ page_name }}/delete/">
+		<table><tr><td><p>Delete this page</p></td><td><dl>
+		</dl></td>
+		<td><input type=submit value="DELETE"></td></tr></table>
+	</form>
+</body>

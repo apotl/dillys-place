@@ -2,7 +2,7 @@ from lib.Site import *
 from lib.Page import *
 from lib.Element import *
 from lib.Forms import *
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from flask.ext.basicauth import BasicAuth
 import json
 import sys
@@ -41,17 +41,42 @@ def route_index():
 	else:
 		return 'please add an index page!!'
 
-@app.route( '/edit', methods=['POST', 'GET'])
+@app.route( '/edit/', methods=['GET'])
 @basic_auth.required
 def edit_page():
 	if request.method == 'POST':
-		pass
-		site.add( Page( site.name + request.form['page_name']))
-	form = PageAddForm( request.form)
-	form.page_name.data = ''
-	pages = list( site.render().keys())
-	pprint.pprint( pages)
-	return render_template( 'edit.html', form = form, pages = pages)
+		if request.form['to_edit']:
+			return redirect( '/edit/' + request.form['to_edit'])
+		if request.form['to_add']:
+			site.add( Page( site.name + request.form['to_add']))
+	page_add = PageAddForm( request.form)
+	page_add.to_add.data = ''
+	page_edit = PageEditForm( request.form)
+	page_edit.choose( site.render().keys())
+	return render_template( 'edit.html', page_add = page_add, page_edit = page_edit)
+
+@app.route( '/edit/goto/', methods=['POST'])
+@basic_auth.required
+def edit_page_goto():
+	return redirect( '/edit/' + request.form['to_edit'])
+
+@app.route( '/edit/add/', methods=['POST'])
+@basic_auth.required
+def edit_page_add():
+	if request.form['to_add']:
+		site.add( Page( site.name + request.form['to_add']))
+	return redirect( '/edit/')
+
+@app.route( '/edit/<path:page_name>', methods=['POST', 'GET'])
+@basic_auth.required
+def edit_page_specific( page_name):
+	return render_template( 'edit_specific.html', page_name = page_name)
+
+@app.route( '/edit/<path:page_name>/delete/', methods=['POST', 'GET'])
+@basic_auth.required
+def edit_page_specific_delete( page_name):
+	site.remove( page_name)
+	return redirect( '/edit/')
 
 if __name__ == '__main__':
 	app.run( host = '0.0.0.0', debug = True)

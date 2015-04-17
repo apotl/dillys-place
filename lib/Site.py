@@ -47,6 +47,7 @@ class Site:
 
 	def remove( self, name):
 		try:
+			del self.tree[name]
 			shutil.rmtree( name)
 		except:
 			raise SiteError( 'Could not remove page successfully')
