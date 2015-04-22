@@ -8,4 +8,16 @@
 		</dl></td>
 		<td><input type=submit value="DELETE"></td></tr></table>
 	</form>
+	<form method=post action="/edit/{{ page_name }}/add/">
+		<table><tr><td><p>Add a text element</p></td><td><dl>
+			{{ ele_add.to_add }}
+		</dl></td>
+		<td><input type=submit value="ADD"></td></tr></table>
+	</form>
+	<form method=post action="/edit/{{ page_name }}/remove/">
+		<table><tr><td><p>Remove an element</p></td><td><dl>
+			{{ ele_remove.to_remove }}
+		</dl></td>
+		<td><input type=submit value="REMOVE"></td></tr></table>
+	</form>
 </body>
