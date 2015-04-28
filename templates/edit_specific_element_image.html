@@ -11,6 +11,8 @@
 	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/">
 		<table><tr><td><p>Change the image title</p></td><td><dl>
 			<dt>Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
+			<dt>Image:</dt><dd><img src="{{ imagename }}"></img></dd>
+			<dt>Caption:</dt><dd>{{ ele_change.to_add_caption }}</dd>
 		</dl></td>
 		<td><input type=submit value="CHANGE"></td></tr></table>
 	</form>

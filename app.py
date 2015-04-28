@@ -118,6 +118,7 @@ def edit_page_specific( page_name):
 	
 	ele_add_image = ElementAddForm_Image( request.form)
 	ele_add_image.to_add_title.data = ''
+	ele_add_image.to_add_caption.data = ''
 
 	ele_change = ElementChangeForm( request.form)
 	ele_change.choose( site.render()[page_name].render())
@@ -156,6 +157,7 @@ def edit_page_specific_add( page_name):
 			return redirect( '/edit/' + page_name)
 		image.save( page_name + '/assets/' + imagename)
 		ele_to_add.content = imagename
+		ele_to_add.caption = request.form['to_add_caption']
 	ele_to_add.location = 'body'
 	site.render()[page_name].add( ele_to_add)
 	return redirect( '/edit/' + page_name)
@@ -176,10 +178,11 @@ def edit_page_specific_element( page_name, ele_id):
 		ele_change.to_add_title.data = site.render()[page_name].render()[ele_id]['title']
 		ele_change.to_add_content.data = site.render()[page_name].render()[ele_id]['content']
 		return render_template( 'edit_specific_element.html', ele_change = ele_change, page_name = page_name, ele_id = ele_id)
-	else:
+	elif site.render()[page_name].retrieve( ele_id)['frmt'] == 'image':
 		ele_change = ElementAddForm_Image( request.form)
 		ele_change.to_add_title.data = site.render()[page_name].render()[ele_id]['title']
-		return render_template( 'edit_specific_element_image.html', ele_change = ele_change, page_name = page_name, ele_id = ele_id)
+		ele_change.to_add_caption.data = site.render()[page_name].render()[ele_id]['caption']
+		return render_template( 'edit_specific_element_image.html', ele_change = ele_change, page_name = page_name, ele_id = ele_id, imagename = '/' + page_name[len( site.name):] + '/assets/' + site.render()[page_name].render()[ele_id]['content'])
 
 @app.route( '/edit/<path:page_name>/id/change/<ele_id>/', methods=['POST'])
 @basic_auth.required
@@ -189,6 +192,8 @@ def edit_page_specific_element_change( page_name, ele_id):
 	tmp_ele.title = request.form['to_add_title']
 	if tmp_ele.frmt == 'text':
 		tmp_ele.content = request.form['to_add_content']
+	elif tmp_ele.frmt == 'image':
+		tmp_ele.caption = request.form['to_add_caption']
 	site.render()[page_name].remove( ele_id, skeleton = True)
 	site.render()[page_name].add( tmp_ele)
 	return redirect( '/edit/' + page_name)

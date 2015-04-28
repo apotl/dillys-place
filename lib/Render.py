@@ -40,10 +40,11 @@ class Body:
 				if self._eles[ele]['title']:
 					to_ret += [ ( self._eles[ele]['distance'], '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>')]
 				to_ret += [ ( self._eles[ele]['distance'], '<p>' + html.escape( self._eles[ele]['content']) + '</p>')]
-			else:
+			elif self._eles[ele]['frmt'] == 'image':
 				if self._eles[ele]['title']:
 					to_ret += [ ( self._eles[ele]['distance'], '<h2 style="text-align: center">' + html.escape( self._eles[ele]['title']) + '</h2>')]
 				to_ret += [ ( self._eles[ele]['distance'], '<img class="pho2" style="width: 75%" src="/' + self._page_name + '/assets/' + self._eles[ele]['content'] + '"></img>')]
+				to_ret += [ ( self._eles[ele]['distance'], '<p style="text-align: center">' + self._eles[ele]['caption'] + '</p>')]
 		to_ret = sorted( to_ret)
 		to_rly_ret = []
 		for ele in to_ret:

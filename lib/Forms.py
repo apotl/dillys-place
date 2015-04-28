@@ -46,6 +46,7 @@ class ElementAddForm( Form):
 class ElementAddForm_Image( Form):
 	to_add_title = TextField( 'Image Title')
 	to_add_image = FileField( 'Image File')
+	to_add_caption = TextAreaField( 'Image Caption')
 
 class ElementChangeForm( Form):
 	to_change = SelectField( 'Element Name')

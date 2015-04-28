@@ -37,6 +37,14 @@ class Page:
 			ele.location
 			ele.distance
 			ele.id
+			if ele.frmt == 'image':
+				ele.caption
+			if ele.frmt == 'event':
+				ele.when
+				ele.where
+			if ele.frmt == 'blogpost':
+				ele.postdate
+				ele.posttime
 		except AttributeError:
 			raise PageError( 'Element given is invalid')
 		if not old:
