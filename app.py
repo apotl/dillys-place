@@ -2,11 +2,13 @@ from lib.Site import *
 from lib.Page import *
 from lib.Element import *
 from lib.Forms import *
+from lib.Render import *
 from flask import Flask, request, render_template, redirect
 from flask.ext.basicauth import BasicAuth
 import json
 import sys
 import string
+import html
 
 if len( sys.argv) != 3:
 	print( 'usage: ' + sys.argv[0] + ' secrets_file site_name')
@@ -45,10 +47,15 @@ basic_auth = BasicAuth( app)
 
 @app.route( '/')
 def route_index():
-	if site.name + 'index' in site.render().keys():
-		return render_template( 'base.html', header = render_template( 'header.html', body = render_template( 'body.html')))
-	else:
-		return 'please create an index page!!'
+	links = Navbar( site, 'index')
+	eles = Body( site, 'index')
+	return render_template( 'base.html', header = render_template( 'header.html', links = links.render(), body = render_template( 'body.html', eles = eles.render())))
+
+@app.route( '/<path:page_name>/')
+def route_everything( page_name):
+	links = Navbar( site, page_name)
+	eles = Body( site, page_name)
+	return render_template( 'base.html', header = render_template( 'header.html', links = links.render(), body = render_template( 'body.html', eles = eles.render())))
 
 @app.route( '/edit/', methods=['GET'])
 @basic_auth.required
@@ -74,7 +81,7 @@ def edit_page_goto():
 @app.route( '/edit/create/', methods=['POST'])
 @basic_auth.required
 def edit_page_create():
-	if request.form['to_create']:
+	if request.form['to_create'] and 'edit' not in request.form['to_create'] and 'static' not in request.form['to_create']:
 		site.add( Page( site.name + request.form['to_create']))
 	return redirect( '/edit/')
 
@@ -82,7 +89,7 @@ def edit_page_create():
 @basic_auth.required
 def edit_page_specific( page_name):
 	if page_name not in site.render().keys():
-		return redirect( '/edit')
+		return redirect( '/edit/')
 	ele_add = ElementAddForm( request.form)
 	ele_add.to_add.data = ''
 	ele_remove = ElementRemoveForm( request.form)
