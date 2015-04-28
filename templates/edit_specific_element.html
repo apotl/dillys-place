@@ -1,0 +1,13 @@
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="{{ url_for('static', filename='edit.js') }}"></script>
+</head>
+<body>
+	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/">
+		<table><tr><td><p>Change a text element</p></td><td><dl>
+			<dt>Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
+			<dt>Content:</dt><dd>{{ ele_change.to_add_content }}</dd>
+		</dl></td>
+		<td><input type=submit value="CHANGE"></td></tr></table>
+	</form>
+</body>

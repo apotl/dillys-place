@@ -43,9 +43,9 @@ class ElementAddForm( Form):
 	to_add_title = TextField( 'Element Title')
 	to_add_content = TextAreaField( 'Element Content')
 
-class ElementRemoveForm( Form):
-	to_remove = SelectField( 'Element Name')
+class ElementChangeForm( Form):
+	to_change = SelectField( 'Element Name')
 	
 	def choose( self, elements):
-		self.to_remove.choices = renderElementList( elements)
-		self.to_remove.choices.insert( 0, ( '', '***Choose an element to remove***'))
+		self.to_change.choices = renderElementList( elements)
+		self.to_change.choices.insert( 0, ( '', '***Choose an element to change***'))

@@ -15,10 +15,10 @@
 		</dl></td>
 		<td><input type=submit value="ADD"></td></tr></table>
 	</form>
-	<form method=post action="/edit/remove/{{ page_name }}/">
-		<table><tr><td><p>Remove an element</p></td><td><dl>
-			{{ ele_remove.to_remove }}
+	<form method=post action="/edit/goto/{{ page_name }}/">
+		<table><tr><td><p>Change an element</p></td><td><dl>
+			{{ ele_change.to_change }}
 		</dl></td>
-		<td><input type=submit value="REMOVE"></td></tr></table>
+		<td><input type=submit value="CHANGE"></td></tr></table>
 	</form>
 </body>

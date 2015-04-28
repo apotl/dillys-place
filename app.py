@@ -87,6 +87,9 @@ def edit_page_goto():
 @app.route( '/edit/create/', methods=['POST'])
 @basic_auth.required
 def edit_page_create():
+	for char in request.form['to_create']:
+		if char not in string.ascii_letters + string.digits + ' ':
+			return redirect( '/edit/')
 	if request.form['to_create'] and 'edit' not in request.form['to_create'] and 'static' not in request.form['to_create']:
 		site.add( Page( site.name + request.form['to_create']))
 	return redirect( '/edit/')
@@ -99,9 +102,16 @@ def edit_page_specific( page_name):
 	ele_add = ElementAddForm( request.form)
 	ele_add.to_add_title.data = ''
 	ele_add.to_add_content.data = ''
-	ele_remove = ElementRemoveForm( request.form)
-	ele_remove.choose( site.render()[page_name].render())
-	return render_template( 'edit_specific.html', ele_remove = ele_remove, ele_add = ele_add, page_name = page_name)
+	ele_change = ElementChangeForm( request.form)
+	ele_change.choose( site.render()[page_name].render())
+	return render_template( 'edit_specific.html', ele_change = ele_change, ele_add = ele_add, page_name = page_name)
+
+@app.route( '/edit/goto/<path:page_name>/', methods=['POST'])
+@basic_auth.required
+def edit_page_specific_goto( page_name):
+	if request.form['to_change'] == '':
+		return redirect( '/edit/' + page_name)
+	return redirect( '/edit/' + page_name + '/id/' + request.form['to_change'])
 
 @app.route( '/edit/delete/<path:page_name>/', methods=['POST'])
 @basic_auth.required
@@ -127,6 +137,27 @@ def edit_page_specific_remove( page_name):
 	if request.form['to_remove'] == '':
 		return redirect( '/edit/' + page_name)
 	site.render()[page_name].remove( request.form['to_remove'])
+	return redirect( '/edit/' + page_name)
+
+@app.route( '/edit/<path:page_name>/id/<ele_id>/', methods=['POST', 'GET'])
+@basic_auth.required
+def edit_page_specific_element( page_name, ele_id):
+	print( ele_id)
+	ele_change = ElementAddForm( request.form)
+	ele_change.to_add_title.data = site.render()[page_name].render()[ele_id]['title']
+	ele_change.to_add_content.data = site.render()[page_name].render()[ele_id]['content']
+	return render_template( 'edit_specific_element.html', ele_change = ele_change, page_name = page_name, ele_id = ele_id)
+
+@app.route( '/edit/<path:page_name>/id/change/<ele_id>/', methods=['POST'])
+@basic_auth.required
+def edit_page_specific_element_change( page_name, ele_id):
+	print( request.form['to_add_title'] + ', about ' + request.form['to_add_content'] + ' on ' + ele_id)
+	tmp_ele = Element( 'text')
+	tmp_ele.load( site.render()[page_name].retrieve( ele_id))
+	tmp_ele.title = request.form['to_add_title']
+	tmp_ele.content = request.form['to_add_content']
+	site.render()[page_name].remove( ele_id)
+	site.render()[page_name].add( tmp_ele)
 	return redirect( '/edit/' + page_name)
 
 if __name__ == '__main__':
