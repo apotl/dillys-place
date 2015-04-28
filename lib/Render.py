@@ -13,10 +13,19 @@ class Navbar:
 		to_ret = []
 		for link in self._links:
 			if link == self._page_name:
-				to_ret += [ '<span style="font-size: 18pt;">' + html.escape( link) + '</span>']
+				to_ret += [ ( link.title(), '<span style="font-size: 18pt;">' + html.escape( link.title()) + '</span>')]
 			else:
-				to_ret += [ '<a href="/' + html.escape( link) + '">' + link + '</a>']
-		return ' | '.join( to_ret)
+				to_ret += [ ( link.title(), '<a href="/' + html.escape( link) + '">' + html.escape( link.title()) + '</a>')]
+		to_ret = sorted( to_ret)
+		to_rly_ret = []
+		for linkpair in to_ret:
+			if 'Index' == linkpair[0]:
+				to_rly_ret += [ linkpair[1].replace( 'Index', 'Home').replace( 'index', '')]
+				to_ret.remove( linkpair)
+				break
+		for linkpair in to_ret:
+			to_rly_ret += [ linkpair[1]]
+		return ' | '.join( to_rly_ret)
 
 class Body:
 
