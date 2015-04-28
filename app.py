@@ -3,7 +3,7 @@ from lib.Page import *
 from lib.Element import *
 from lib.Forms import *
 from lib.Render import *
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, send_file
 from flask.ext.basicauth import BasicAuth
 from werkzeug import secure_filename
 import json
@@ -68,6 +68,13 @@ def route_everything( page_name):
 	except KeyError:
 		return '404 Not Found.', 404
 	return render_template( 'base.html', header = render_template( 'header.html', links = links.render(), body = render_template( 'body_normal.html', eles = eles.render())))
+
+@app.route( '/<path:page_name>/assets/<imagename>')
+def route_assets( page_name, imagename):
+	try:
+		return send_file( site.name + page_name + '/assets/' + imagename)
+	except:
+		return '404 Not Found.', 404
 
 @app.route( '/edit/', methods=['GET'])
 @basic_auth.required

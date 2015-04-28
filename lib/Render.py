@@ -30,14 +30,20 @@ class Navbar:
 class Body:
 
 	def __init__( self, site, page_name):
+		self._page_name = page_name
 		self._eles = site.render()[site.name + page_name].render()
 
 	def render( self):
 		to_ret = []
 		for ele in self._eles.keys():
-			if self._eles[ele]['title']:
-				to_ret += [ ( self._eles[ele]['distance'], '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>')]
-			to_ret += [ ( self._eles[ele]['distance'], '<p>' + html.escape( self._eles[ele]['content']) + '</p>')]
+			if self._eles[ele]['frmt'] == 'text':
+				if self._eles[ele]['title']:
+					to_ret += [ ( self._eles[ele]['distance'], '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>')]
+				to_ret += [ ( self._eles[ele]['distance'], '<p>' + html.escape( self._eles[ele]['content']) + '</p>')]
+			else:
+				if self._eles[ele]['title']:
+					to_ret += [ ( self._eles[ele]['distance'], '<h2 style="text-align: center">' + html.escape( self._eles[ele]['title']) + '</h2>')]
+				to_ret += [ ( self._eles[ele]['distance'], '<img class="pho2" style="width: 75%" src="/' + self._page_name + '/assets/' + self._eles[ele]['content'] + '"></img>')]
 		to_ret = sorted( to_ret)
 		to_rly_ret = []
 		for ele in to_ret:
