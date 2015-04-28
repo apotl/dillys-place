@@ -47,14 +47,20 @@ basic_auth = BasicAuth( app)
 
 @app.route( '/')
 def route_index():
-	links = Navbar( site, 'index')
-	eles = Body( site, 'index')
+	try:
+		links = Navbar( site, 'index')
+		eles = Body( site, 'index')
+	except KeyError:
+		return '404 Not Found.', 404
 	return render_template( 'base.html', header = render_template( 'header.html', links = links.render(), body = render_template( 'body.html', eles = eles.render())))
 
 @app.route( '/<path:page_name>/')
 def route_everything( page_name):
-	links = Navbar( site, page_name)
-	eles = Body( site, page_name)
+	try:
+		links = Navbar( site, page_name)
+		eles = Body( site, page_name)
+	except KeyError:
+		return '404 Not Found.', 404
 	return render_template( 'base.html', header = render_template( 'header.html', links = links.render(), body = render_template( 'body.html', eles = eles.render())))
 
 @app.route( '/edit/', methods=['GET'])
@@ -91,7 +97,8 @@ def edit_page_specific( page_name):
 	if page_name not in site.render().keys():
 		return redirect( '/edit/')
 	ele_add = ElementAddForm( request.form)
-	ele_add.to_add.data = ''
+	ele_add.to_add_title.data = ''
+	ele_add.to_add_content.data = ''
 	ele_remove = ElementRemoveForm( request.form)
 	ele_remove.choose( site.render()[page_name].render())
 	return render_template( 'edit_specific.html', ele_remove = ele_remove, ele_add = ele_add, page_name = page_name)
@@ -106,9 +113,10 @@ def edit_page_specific_delete( page_name):
 @basic_auth.required
 def edit_page_specific_add( page_name):
 	ele_to_add = Element( 'text')
-	if not request.form['to_add']:
+	if not request.form['to_add_content']:
 		return redirect( '/edit/' + page_name)
-	ele_to_add.content = request.form['to_add']
+	ele_to_add.title = request.form[ 'to_add_title']
+	ele_to_add.content = request.form['to_add_content'].replace( '\n', ' ')
 	ele_to_add.location = 'body'
 	site.render()[page_name].add( ele_to_add)
 	return redirect( '/edit/' + page_name)
@@ -116,7 +124,7 @@ def edit_page_specific_add( page_name):
 @app.route( '/edit/remove/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_remove( page_name):
-	if request.form['to_remove'] == '***Choose an element to remove***':
+	if request.form['to_remove'] == '':
 		return redirect( '/edit/' + page_name)
 	site.render()[page_name].remove( request.form['to_remove'])
 	return redirect( '/edit/' + page_name)

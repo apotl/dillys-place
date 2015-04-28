@@ -10,7 +10,8 @@
 	</form>
 	<form method=post action="/edit/add/{{ page_name }}/">
 		<table><tr><td><p>Add a text element</p></td><td><dl>
-			{{ ele_add.to_add }}
+			<dt>Title:</dt><dd>{{ ele_add.to_add_title }}</dd>
+			<dt>Content:</dt><dd>{{ ele_add.to_add_content }}</dd>
 		</dl></td>
 		<td><input type=submit value="ADD"></td></tr></table>
 	</form>

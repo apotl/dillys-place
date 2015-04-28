@@ -14,6 +14,7 @@ class Element:
 			self.frmt = 'image'
 		else:
 			raise ElementError( 'Invalid element type')
+		self.title = ''
 		self.content = ''
 		self.location = ''
 		random.seed()
@@ -21,6 +22,7 @@ class Element:
 	def render( self):
 		ele = {}
 		ele['frmt'] = self.frmt
+		ele['title'] = self.title
 		ele['content'] = self.content
 		ele['location'] = self.location
 		ele['id'] = self.id
@@ -28,6 +30,7 @@ class Element:
 	def load( self, ele_dict):
 		try:
 			self.frmt = ele_dict['frmt']
+			self.title = ele_dict['title']
 			self.content = ele_dict['content']
 			self.location = ele_dict['location']
 			self.id = ele_dict['id']

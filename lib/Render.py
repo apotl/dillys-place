@@ -26,5 +26,7 @@ class Body:
 	def render( self):
 		to_ret = []
 		for ele in self._eles.keys():
+			if self._eles[ele]['title']:
+				to_ret += [ '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>']
 			to_ret += [ '<p>' + html.escape( self._eles[ele]['content']) + '</p>']
 		return ''.join( to_ret)
