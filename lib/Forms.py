@@ -2,8 +2,8 @@ from wtforms import Form, TextField, SelectField, TextAreaField
 from lib.Element import *
 import pprint
 
-class PageAddForm( Form):
-	to_add = TextField( 'Page Name')
+class PageCreateForm( Form):
+	to_create = TextField( 'Page Name')
 
 def listToPair( list):
 	to_ret = []

@@ -46,9 +46,9 @@ basic_auth = BasicAuth( app)
 @app.route( '/')
 def route_index():
 	if site.name + 'index' in site.render().keys():
-		return 'well there\'s an index page...'
+		return render_template( 'base.html', header = render_template( 'header.html', body = render_template( 'body.html')))
 	else:
-		return 'please add an index page!!'
+		return 'please create an index page!!'
 
 @app.route( '/edit/', methods=['GET'])
 @basic_auth.required
@@ -56,13 +56,13 @@ def edit_page():
 	if request.method == 'POST':
 		if request.form['to_edit']:
 			return redirect( '/edit/' + request.form['to_edit'])
-		if request.form['to_add']:
-			site.add( Page( site.name + request.form['to_add']))
-	page_add = PageAddForm( request.form)
-	page_add.to_add.data = ''
+		if request.form['to_create']:
+			site.add( Page( site.name + request.form['to_create']))
+	page_create = PageCreateForm( request.form)
+	page_create.to_create.data = ''
 	page_edit = PageEditForm( request.form)
 	page_edit.choose( site.render().keys())
-	return render_template( 'edit.html', page_add = page_add, page_edit = page_edit)
+	return render_template( 'edit.html', page_create = page_create, page_edit = page_edit)
 
 @app.route( '/edit/goto/', methods=['POST'])
 @basic_auth.required
@@ -71,14 +71,14 @@ def edit_page_goto():
 		return redirect( '/edit/')
 	return redirect( '/edit/' + request.form['to_edit'])
 
-@app.route( '/edit/add/', methods=['POST'])
+@app.route( '/edit/create/', methods=['POST'])
 @basic_auth.required
-def edit_page_add():
-	if request.form['to_add']:
-		site.add( Page( site.name + request.form['to_add']))
+def edit_page_create():
+	if request.form['to_create']:
+		site.add( Page( site.name + request.form['to_create']))
 	return redirect( '/edit/')
 
-@app.route( '/edit/<path:page_name>', methods=['POST', 'GET'])
+@app.route( '/edit/<path:page_name>/', methods=['POST', 'GET'])
 @basic_auth.required
 def edit_page_specific( page_name):
 	if page_name not in site.render().keys():
@@ -89,13 +89,13 @@ def edit_page_specific( page_name):
 	ele_remove.choose( site.render()[page_name].render())
 	return render_template( 'edit_specific.html', ele_remove = ele_remove, ele_add = ele_add, page_name = page_name)
 
-@app.route( '/edit/<path:page_name>/delete/', methods=['POST'])
+@app.route( '/edit/delete/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_delete( page_name):
 	site.remove( page_name)
 	return redirect( '/edit/')
 
-@app.route( '/edit/<path:page_name>/add/', methods=['POST'])
+@app.route( '/edit/add/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_add( page_name):
 	ele_to_add = Element( 'text')
@@ -106,7 +106,7 @@ def edit_page_specific_add( page_name):
 	site.render()[page_name].add( ele_to_add)
 	return redirect( '/edit/' + page_name)
 
-@app.route( '/edit/<path:page_name>/remove/', methods=['POST'])
+@app.route( '/edit/remove/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_remove( page_name):
 	if request.form['to_remove'] == '***Choose an element to remove***':
