@@ -17,6 +17,7 @@ class Element:
 		self.title = ''
 		self.content = ''
 		self.location = ''
+		self.distance = 0
 		random.seed()
 		self.id = str( random.getrandbits(32))
 	def render( self):
@@ -25,6 +26,7 @@ class Element:
 		ele['title'] = self.title
 		ele['content'] = self.content
 		ele['location'] = self.location
+		ele['distance'] = self.distance
 		ele['id'] = self.id
 		return ele
 	def load( self, ele_dict):
@@ -33,6 +35,7 @@ class Element:
 			self.title = ele_dict['title']
 			self.content = ele_dict['content']
 			self.location = ele_dict['location']
+			self.distance = ele_dict['distance']
 			self.id = ele_dict['id']
 		except:
 			raise ElementError( 'given element dict is invalid')

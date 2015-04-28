@@ -22,10 +22,14 @@ def renderElementList( list):
 		tmp_ele = Element( 'text')
 		tmp_ele.load( list[ele])
 		if not tmp_ele.title:
-			to_ret += [ ( tmp_ele.id, '"' + tmp_ele.content[:25] + checkElementContentLength( tmp_ele.content) + '"')]
+			to_ret += [ ( tmp_ele.distance, tmp_ele.id, '"' + tmp_ele.content[:25] + checkElementContentLength( tmp_ele.content) + '"')]
 		else:
-			to_ret += [ ( tmp_ele.id, 'TITLE: ' + tmp_ele.title)]
-	return to_ret
+			to_ret += [ ( tmp_ele.distance, tmp_ele.id, 'TITLE: ' + tmp_ele.title)]
+	to_ret = sorted( to_ret)
+	to_rly_ret = []
+	for ele in to_ret:
+		to_rly_ret += [ ( ele[1], ele[2])]
+	return to_rly_ret
 
 
 class PageEditForm( Form):

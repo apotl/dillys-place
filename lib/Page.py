@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os.path
 import json
+import pprint
 
 class PageError( Exception):
 
@@ -15,15 +16,30 @@ class Page:
 		except:
 			raise PageError( 'Could not create a directory with that name')
 		self.name = name
+		self._maxdist = self.__find_maxdist()
 
-	def add( self, ele):
+	def __find_maxdist( self):
+		maxlist = []
+		dict_render = self.render()
+		for ele in dict_render.keys():
+			maxlist += [ dict_render[ele]['distance'] ]
+		if maxlist == []:
+			return 0
+		return max( maxlist)
+
+	def add( self, ele, old = False):
 		try:
 			ele.frmt
+			ele.title
 			ele.content
 			ele.location
+			ele.distance
 			ele.id
 		except AttributeError:
 			raise PageError( 'Element given is invalid')
+		if not old:
+			ele.distance = self._maxdist + 10
+			self._maxdist = ele.distance
 		ele_file = open( self.name + '/' + ele.id, 'w+')
 		ele_file.write( json.dumps( ele.render()))
 		ele_file.close()
@@ -33,6 +49,7 @@ class Page:
 			os.remove( self.name + '/' + ele_id)
 		except FileNotFoundError:
 			raise PageError( 'Element id given does not exist')
+		self._maxdist = self.__find_maxdist()
 
 	def retrieve( self, ele_id):
 		try:

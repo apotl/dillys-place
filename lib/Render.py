@@ -27,6 +27,10 @@ class Body:
 		to_ret = []
 		for ele in self._eles.keys():
 			if self._eles[ele]['title']:
-				to_ret += [ '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>']
-			to_ret += [ '<p>' + html.escape( self._eles[ele]['content']) + '</p>']
-		return ''.join( to_ret)
+				to_ret += [ ( self._eles[ele]['distance'], '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>')]
+			to_ret += [ ( self._eles[ele]['distance'], '<p>' + html.escape( self._eles[ele]['content']) + '</p>')]
+		to_ret = sorted( to_ret)
+		to_rly_ret = []
+		for ele in to_ret:
+			to_rly_ret += [ ele[1]]
+		return ''.join( to_rly_ret)

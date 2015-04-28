@@ -32,7 +32,7 @@ class Site:
 					ele_to_load = Element( 'text')
 					ele_to_load.load( json.loads( ele_content))
 					if element == ele_to_load.render()['id']:
-						page.add( ele_to_load)
+						page.add( ele_to_load, old = True)
 					else:
 						print( 'Element to load to page is non-natively generated: ' + element)
 				except:
