@@ -35,6 +35,8 @@ class Site:
 						page.add( ele_to_load, old = True)
 					else:
 						print( 'Element to load to page is non-natively generated: ' + element)
+				except IsADirectoryError:
+					pass
 				except:
 					print( 'Element to load to page is non-natively generated: ' + element)
 			self.tree[page_name] = page

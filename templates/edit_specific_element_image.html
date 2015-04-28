@@ -4,14 +4,13 @@
 </head>
 <body>
 	<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
-		<table><tr><td><p>Delete this element</p></td><td><dl>
+		<table><tr><td><p>Delete this image</p></td><td><dl>
 		</dl></td>
 		<td><input type=submit value="DELETE"></td></tr></table>
 	</form>
 	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/">
-		<table><tr><td><p>Change a text element</p></td><td><dl>
+		<table><tr><td><p>Change the image title</p></td><td><dl>
 			<dt>Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
-			<dt>Content:</dt><dd>{{ ele_change.to_add_content }}</dd>
 		</dl></td>
 		<td><input type=submit value="CHANGE"></td></tr></table>
 	</form>

@@ -15,6 +15,13 @@
 		</dl></td>
 		<td><input type=submit value="ADD"></td></tr></table>
 	</form>
+	<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
+		<table><tr><td><p>Upload an image</p></td><td><dl>
+			<dt>Title:</dt><dd>{{ ele_add_image.to_add_title }}</dd>
+			<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image }}</dd>
+		</dl></td>
+		<td><input type=submit value="UPLOAD"></td></tr></table>
+	</form>
 	<form method=post action="/edit/goto/{{ page_name }}/">
 		<table><tr><td><p>Change an element</p></td><td><dl>
 			{{ ele_change.to_change }}

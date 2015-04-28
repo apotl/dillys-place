@@ -13,6 +13,8 @@ class Page:
 		try:
 			if not os.path.isdir( name):
 				os.mkdir( name)
+			if not os.path.isdir( name + '/assets/'):
+				os.mkdir( name + '/assets/')
 		except:
 			raise PageError( 'Could not create a directory with that name')
 		self.name = name
@@ -44,8 +46,10 @@ class Page:
 		ele_file.write( json.dumps( ele.render()))
 		ele_file.close()
 
-	def remove( self, ele_id):
+	def remove( self, ele_id, skeleton = False):
 		try:
+			if not skeleton and self.retrieve( ele_id)['frmt'] == 'image':
+				os.remove( self.name + '/assets/' + self.retrieve( ele_id)['content'])
 			os.remove( self.name + '/' + ele_id)
 		except FileNotFoundError:
 			raise PageError( 'Element id given does not exist')
@@ -63,5 +67,8 @@ class Page:
 	def render( self): #will pass all elements in a dictionary
 		dict_render = {}
 		for element in os.listdir( self.name):
-			dict_render[element] = self.retrieve( element)
+			if element == 'assets':
+				pass
+			else:
+				dict_render[element] = self.retrieve( element)
 		return dict_render

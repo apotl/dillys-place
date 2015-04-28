@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, SelectField, TextAreaField
+from wtforms import Form, TextField, SelectField, TextAreaField, FileField
 from lib.Element import *
 import pprint
 
@@ -42,6 +42,10 @@ class PageEditForm( Form):
 class ElementAddForm( Form):
 	to_add_title = TextField( 'Element Title')
 	to_add_content = TextAreaField( 'Element Content')
+
+class ElementAddForm_Image( Form):
+	to_add_title = TextField( 'Image Title')
+	to_add_image = FileField( 'Image File')
 
 class ElementChangeForm( Form):
 	to_change = SelectField( 'Element Name')
