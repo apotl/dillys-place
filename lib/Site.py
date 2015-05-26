@@ -40,6 +40,12 @@ class Site:
 				except:
 					print( 'Element to load to page is non-natively generated: ' + element)
 			self.tree[page_name] = page
+		if name + '/index' not in page_dict:
+			self.tree[name + '/index'] = Page( name + '/index')
+		if name + '/events' not in page_dict:
+			self.tree[name + '/events'] = Page( name + '/events')
+		if name + '/photos' not in page_dict:
+			self.tree[name + '/photos'] = Page( name + '/photos')
 
 	def add( self, page):
 		self.tree[page.name] = page

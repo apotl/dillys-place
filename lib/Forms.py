@@ -48,6 +48,12 @@ class ElementAddForm_Image( Form):
 	to_add_image = FileField( 'Image File')
 	to_add_caption = TextAreaField( 'Image Caption')
 
+class ElementAddForm_Event( Form):
+	to_add_title = TextField( 'Event Title')
+	to_add_content = TextAreaField( 'Event Description')
+	to_add_when = TextAreaField( 'Event Time')
+	to_add_where = TextField( 'Event Location')
+
 class ElementChangeForm( Form):
 	to_change = SelectField( 'Element Name')
 	

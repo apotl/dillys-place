@@ -10,9 +10,10 @@
 	</form>
 	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/" enctype=multipart/form-data>
 		<table><tr><td><p>Change the image title</p></td><td><dl>
-			<dt>Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
-			<dt>Image:</dt><dd><img src="{{ imagename }}"></img></dd><dd>{{ ele_change.to_add_image }} </dd>
-			<dt>Caption:</dt><dd>{{ ele_change.to_add_caption }}</dd>
+			<dt>Event Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
+			<dt>Event Date & Time:</dt><dd>{{ ele_change.to_add_when }}</dd>
+			<dt>Event Location:</dt><dd>{{ ele_change.to_add_where }}</dd>
+			<dt>Event Description:</dt><dd>{{ ele_change.to_add_content }}</dd>
 		</dl></td>
 		<td><input type=submit value="CHANGE"></td></tr></table>
 	</form>

@@ -1,0 +1,21 @@
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="{{ url_for('static', filename='edit.js') }}"></script>
+</head>
+<body>
+	<form method=post action="/edit/add/{{ page_name }}/">
+		<table><tr><td><p>Add an Event</p></td><td><dl>
+			<dt>Event Title:</dt><dd>{{ ele_add_event.to_add_title }}</dd>
+			<dt>Event Date & Time:</dt><dd>{{ ele_add_event.to_add_when }}</dd>
+			<dt>Event Location:</dt><dd>{{ ele_add_event.to_add_where }}</dd>
+			<dt>Event Description:</dt><dd>{{ ele_add_event.to_add_content }}</dd>
+		</dl></td>
+		<td><input type=submit value="ADD"></td></tr></table>
+	</form>
+	<form method=post action="/edit/goto/{{ page_name }}/">
+		<table><tr><td><p>Change an element</p></td><td><dl>
+			{{ ele_change.to_change }}
+		</dl></td>
+		<td><input type=submit value="CHANGE"></td></tr></table>
+	</form>
+</body>

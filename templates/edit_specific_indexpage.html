@@ -1,0 +1,27 @@
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="{{ url_for('static', filename='edit.js') }}"></script>
+</head>
+<body>
+	<form method=post action="/edit/add/{{ page_name }}/">
+		<table><tr><td><p>Add a text element</p></td><td><dl>
+			<dt>Title:</dt><dd>{{ ele_add.to_add_title }}</dd>
+			<dt>Content:</dt><dd>{{ ele_add.to_add_content }}</dd>
+		</dl></td>
+		<td><input type=submit value="ADD"></td></tr></table>
+	</form>
+	<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
+		<table><tr><td><p>Upload an image</p></td><td><dl>
+			<dt>Title:</dt><dd>{{ ele_add_image.to_add_title }}</dd>
+			<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image }}</dd>
+			<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption }}</dd>
+		</dl></td>
+		<td><input type=submit value="UPLOAD"></td></tr></table>
+	</form>
+	<form method=post action="/edit/goto/{{ page_name }}/">
+		<table><tr><td><p>Change an element</p></td><td><dl>
+			{{ ele_change.to_change }}
+		</dl></td>
+		<td><input type=submit value="CHANGE"></td></tr></table>
+	</form>
+</body>

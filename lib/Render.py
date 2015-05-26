@@ -13,7 +13,7 @@ class Navbar:
 		to_ret = []
 		for link in self._links:
 			if link == self._page_name:
-				to_ret += [ ( link.title(), '<span style="font-size: 18pt;">' + html.escape( link.title()) + '</span>')]
+				to_ret += [ ( link.title(), '<span>' + html.escape( link.title()) + '</span>')]
 			else:
 				to_ret += [ ( link.title(), '<a href="/' + html.escape( link) + '">' + html.escape( link.title()) + '</a>')]
 		to_ret = sorted( to_ret)
@@ -37,14 +37,27 @@ class Body:
 		to_ret = []
 		for ele in self._eles.keys():
 			if self._eles[ele]['frmt'] == 'text':
+				tmp_text = ''
 				if self._eles[ele]['title']:
-					to_ret += [ ( self._eles[ele]['distance'], '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>')]
-				to_ret += [ ( self._eles[ele]['distance'], '<p>' + html.escape( self._eles[ele]['content']) + '</p>')]
+					tmp_text += '<h2>' + html.escape( self._eles[ele]['title']) + '</h2>'
+				tmp_text += '<p>' + html.escape( self._eles[ele]['content']).replace( html.escape( '<br>'), '<br>') + '</p>'
+				to_ret += [ ( self._eles[ele]['distance'], tmp_text)]
 			elif self._eles[ele]['frmt'] == 'image':
+				tmp_image = ''
 				if self._eles[ele]['title']:
-					to_ret += [ ( self._eles[ele]['distance'], '<h2 style="text-align: center">' + html.escape( self._eles[ele]['title']) + '</h2>')]
-				to_ret += [ ( self._eles[ele]['distance'], '<img class="pho2" style="width: 75%" src="/' + self._page_name + '/assets/' + self._eles[ele]['content'] + '"></img>')]
-				to_ret += [ ( self._eles[ele]['distance'], '<p style="text-align: center">' + self._eles[ele]['caption'] + '</p>')]
+					tmp_image += '<h2 style="text-align: center">' + html.escape( self._eles[ele]['title']) + '</h2>'
+				if self._page_name == 'index':
+					tmp_image += '<img class="pho"'
+				else:
+					tmp_image += '<img class="pho2" style="width: 75%"'
+				tmp_image += ' src="/' + self._page_name + '/assets/' + self._eles[ele]['content'] + '"></img>'
+				tmp_image += '<p style="text-align: center">' + self._eles[ele]['caption'].replace( html.escape( '<br>'), '<br>') + '</p>'
+				if self._page_name == 'photos':
+					tmp_image += '<hr>'
+				to_ret += [ ( self._eles[ele]['distance'], tmp_image)]
+			elif self._eles[ele]['frmt'] == 'event':
+				tmp_event = '<h2>' + html.escape( self._eles[ele]['title']) + '</h2><p>' + '<b><p>' + html.escape( self._eles[ele]['when']).replace( html.escape( '<br>'), '<br>') + '<br>' + html.escape( self._eles[ele]['where']) + '</p></b>' + '<p>' + html.escape( self._eles[ele]['content']).replace( html.escape( '<br>'), '<br>') + '</p></p><hr>'
+				to_ret += [ ( self._eles[ele]['distance'], tmp_event)]
 		to_ret = sorted( to_ret)
 		to_rly_ret = []
 		for ele in to_ret:
