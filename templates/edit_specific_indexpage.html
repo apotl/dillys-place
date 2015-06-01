@@ -1,3 +1,4 @@
+<h1>You may add a paragraph of text OR you may upload an image.</h1>
 <form method=post action="/edit/add/{{ page_name }}/">
 	<table class="table"><tr><td><p>Add a paragraph of text</p></td><td><dl>
 		<dt>Title of paragraph:</dt><dd>{{ ele_add.to_add_title( class_ = "form-control") }}</dd>
@@ -5,6 +6,7 @@
 	</dl></td>
 	<td><input class="btn btn-primary" type=submit value="ADD"></td></tr></table>
 </form>
+<h1 style="text-align: center; font-size: 120px;">OR...</h1>
 <form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
 	<table class="table"><tr><td><p>Upload an image</p></td><td><dl>
 		<dt>Title:</dt><dd>{{ ele_add_image.to_add_title( class_ = "form-control") }}</dd>
