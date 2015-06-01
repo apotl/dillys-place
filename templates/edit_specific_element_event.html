@@ -1,20 +1,14 @@
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="{{ url_for('static', filename='edit.js') }}"></script>
-</head>
-<body>
-	<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
-		<table><tr><td><p>Delete this image</p></td><td><dl>
-		</dl></td>
-		<td><input type=submit value="DELETE"></td></tr></table>
-	</form>
-	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/" enctype=multipart/form-data>
-		<table><tr><td><p>Change the image title</p></td><td><dl>
-			<dt>Event Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
-			<dt>Event Date & Time:</dt><dd>{{ ele_change.to_add_when }}</dd>
-			<dt>Event Location:</dt><dd>{{ ele_change.to_add_where }}</dd>
-			<dt>Event Description:</dt><dd>{{ ele_change.to_add_content }}</dd>
-		</dl></td>
-		<td><input type=submit value="CHANGE"></td></tr></table>
-	</form>
-</body>
+<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
+	<table class="table"><tr><td><p>Delete this event</p></td><td><dl>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="DELETE"></td></tr></table>
+</form>
+<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/" enctype=multipart/form-data>
+	<table class="table"><tr><td><p>Change the event information</p></td><td><dl>
+		<dt>Event Title:</dt><dd>{{ ele_change.to_add_title( class_ = "form-control") }}</dd>
+		<dt>Event Date & Time:</dt><dd>{{ ele_change.to_add_when( class_ = "form-control", rows = 10) }}</dd>
+		<dt>Event Location:</dt><dd>{{ ele_change.to_add_where( class_ = "form-control") }}</dd>
+		<dt>Event Description:</dt><dd>{{ ele_change.to_add_content( class_ = "form-control", rows = 10) }}</dd>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="CHANGE"></td></tr></table>
+</form>

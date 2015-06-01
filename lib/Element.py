@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import random
+import datetime
 
 class ElementError( Exception):
 
@@ -28,8 +29,8 @@ class Element:
 			self.when = ''
 			self.where = ''
 		if self.frmt == 'blogpost':
-			self.postdate = ''
-			self.posttime = ''
+			self.postdate = datetime.datetime.now().strftime('%A %B %d, %Y')
+			self.posttime = datetime.datetime.now().strftime('%I:%M %p')
 		random.seed()
 		self.id = str( random.getrandbits(32))
 	def render( self):

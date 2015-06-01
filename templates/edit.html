@@ -1,18 +1,12 @@
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="{{ url_for('static', filename='edit.js') }}"></script>
-</head>
-<body>
-	<form method=post action="/edit/goto/">
-		<table><tr><td><p>Select a page to edit:</p></td><td><dl>
-			{{ page_edit.to_edit }}
-		</dl></td>
-		<td><input type=submit value="Edit Selected Page"></td></tr></table>
-	</form>
-	<form method=post action="/edit/create/">
-		<table><tr><td><p>Name of new page:</p></td><td><dl>
-			{{ page_create.to_create }}
-		</dl></td>
-		<td><input type=submit value="Add New Page"></td></tr></table>
-	</form>
-</body>
+<form method=post action="/edit/goto/">
+	<table class="table"><tr><td><p>Select a page to edit:</p></td><td><dl>
+		{{ page_edit.to_edit( class_ = "form-control") }}
+	</dl><dd>The page called "Index" is your website's <b>Home</b> page.</dd></td>
+	<td><input class="btn btn-primary" type=submit value="Edit Selected Page"></td></tr></table>
+</form>
+<form method=post action="/edit/create/">
+	<table class="table"><tr><td><p>Name of new page:</p></td><td><dl>
+		{{ page_create.to_create( class_ = "form-control") }}
+	</dl><dd>If you want to add a new page, type the name of the new page here.</td>
+	<td><input class="btn btn-primary" type=submit value="Add New Page"></td></tr></table>
+</form>

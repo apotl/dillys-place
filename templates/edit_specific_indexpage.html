@@ -1,27 +1,21 @@
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="{{ url_for('static', filename='edit.js') }}"></script>
-</head>
-<body>
-	<form method=post action="/edit/add/{{ page_name }}/">
-		<table><tr><td><p>Add a text element</p></td><td><dl>
-			<dt>Title:</dt><dd>{{ ele_add.to_add_title }}</dd>
-			<dt>Content:</dt><dd>{{ ele_add.to_add_content }}</dd>
-		</dl></td>
-		<td><input type=submit value="ADD"></td></tr></table>
-	</form>
-	<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
-		<table><tr><td><p>Upload an image</p></td><td><dl>
-			<dt>Title:</dt><dd>{{ ele_add_image.to_add_title }}</dd>
-			<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image }}</dd>
-			<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption }}</dd>
-		</dl></td>
-		<td><input type=submit value="UPLOAD"></td></tr></table>
-	</form>
-	<form method=post action="/edit/goto/{{ page_name }}/">
-		<table><tr><td><p>Change an element</p></td><td><dl>
-			{{ ele_change.to_change }}
-		</dl></td>
-		<td><input type=submit value="CHANGE"></td></tr></table>
-	</form>
-</body>
+<form method=post action="/edit/add/{{ page_name }}/">
+	<table class="table"><tr><td><p>Add a paragraph of text</p></td><td><dl>
+		<dt>Title of paragraph:</dt><dd>{{ ele_add.to_add_title( class_ = "form-control") }}</dd>
+		<dt>Paragraph:</dt><dd>{{ ele_add.to_add_content( class_ = "form-control", rows = 10) }}</dd><dd>You MUST have something in your paragraph, otherwise it will not be added to the website.</dd>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="ADD"></td></tr></table>
+</form>
+<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
+	<table class="table"><tr><td><p>Upload an image</p></td><td><dl>
+		<dt>Title:</dt><dd>{{ ele_add_image.to_add_title( class_ = "form-control") }}</dd>
+		<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image( class_ = "form-control") }}</dd>
+		<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption( class_ = "form-control", rows = 10) }}</dd>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="UPLOAD"></td></tr></table>
+</form>
+<form method=post action="/edit/goto/{{ page_name }}/">
+	<table class="table"><tr><td><p>Change an image or paragraph</p></td><td><dl>
+		{{ ele_change.to_change( class_ = "form-control") }}
+	</dl><dd>This is a list of paragraphs or images on the page you are editing.  You can select the image or paragraph you want to change by the title you gave it.</td>
+	<td><input class="btn btn-primary" type=submit value="CHANGE"></td></tr></table>
+</form>

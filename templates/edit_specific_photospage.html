@@ -1,20 +1,14 @@
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="{{ url_for('static', filename='edit.js') }}"></script>
-</head>
-<body>
-	<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
-		<table><tr><td><p>Upload an image</p></td><td><dl>
-			<dt>Title:</dt><dd>{{ ele_add_image.to_add_title }}</dd>
-			<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image }}</dd>
-			<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption }}</dd>
-		</dl></td>
-		<td><input type=submit value="UPLOAD"></td></tr></table>
-	</form>
-	<form method=post action="/edit/goto/{{ page_name }}/">
-		<table><tr><td><p>Change an element</p></td><td><dl>
-			{{ ele_change.to_change }}
-		</dl></td>
-		<td><input type=submit value="CHANGE"></td></tr></table>
-	</form>
-</body>
+<form method=post action="/edit/add/{{ page_name }}/" enctype=multipart/form-data>
+	<table class="table"><tr><td><p>Upload an image</p></td><td><dl>
+		<dt>Title:</dt><dd>{{ ele_add_image.to_add_title( class_ = "form-control") }}</dd>
+		<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image( class_ = "form-control") }}</dd>
+		<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption( class_ = "form-control", rows = 10) }}</dd>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="UPLOAD"></td></tr></table>
+</form>
+<form method=post action="/edit/goto/{{ page_name }}/">
+	<table class="table"><tr><td><p>Change an element</p></td><td><dl>
+		{{ ele_change.to_change( class_ = "form-control") }}
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="CHANGE"></td></tr></table>
+</form>

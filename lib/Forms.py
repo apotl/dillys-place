@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, SelectField, TextAreaField, FileField
+from wtforms import Form, TextField, SelectField, TextAreaField, FileField, HiddenField
 from lib.Element import *
 import pprint
 
@@ -8,7 +8,7 @@ class PageCreateForm( Form):
 def listToPair( list):
 	to_ret = []
 	for page in list:
-		to_ret += [ ( page, page)]
+		to_ret += [ ( page, page.split( '/', 1)[-1].title())]
 	return to_ret
 
 def checkElementContentLength( content):
@@ -54,9 +54,15 @@ class ElementAddForm_Event( Form):
 	to_add_when = TextAreaField( 'Event Time')
 	to_add_where = TextField( 'Event Location')
 
+class ElementAddForm_Blogpost( Form):
+	to_add_title = TextField( 'Blog Title')
+	to_add_content = TextAreaField( 'Blog Content')
+	to_add_posttime = HiddenField( 'Blog Posttime')
+	to_add_postdate = HiddenField( 'Blog Postdate')
+
 class ElementChangeForm( Form):
 	to_change = SelectField( 'Element Name')
 	
 	def choose( self, elements):
 		self.to_change.choices = renderElementList( elements)
-		self.to_change.choices.insert( 0, ( '', '***Choose an element to change***'))
+		self.to_change.choices.insert( 0, ( '', '***Choose something to change***'))

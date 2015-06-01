@@ -46,6 +46,8 @@ class Site:
 			self.tree[name + '/events'] = Page( name + '/events')
 		if name + '/photos' not in page_dict:
 			self.tree[name + '/photos'] = Page( name + '/photos')
+		if name + '/blog' not in page_dict:
+			self.tree[name + '/blog'] = Page( name + '/blog')
 
 	def add( self, page):
 		self.tree[page.name] = page

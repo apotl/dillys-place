@@ -58,7 +58,12 @@ class Body:
 			elif self._eles[ele]['frmt'] == 'event':
 				tmp_event = '<h2>' + html.escape( self._eles[ele]['title']) + '</h2><p>' + '<b><p>' + html.escape( self._eles[ele]['when']).replace( html.escape( '<br>'), '<br>') + '<br>' + html.escape( self._eles[ele]['where']) + '</p></b>' + '<p>' + html.escape( self._eles[ele]['content']).replace( html.escape( '<br>'), '<br>') + '</p></p><hr>'
 				to_ret += [ ( self._eles[ele]['distance'], tmp_event)]
+			elif self._eles[ele]['frmt'] == 'blogpost':
+				tmp_blogpost = '<h1>' + html.escape( self._eles[ele]['title']) + '</h1><p class="small"><i>Posted ' + html.escape( self._eles[ele]['postdate']) + ' at ' + html.escape( self._eles[ele]['posttime']) + '</i></p><p>' + html.escape( self._eles[ele]['content']).replace( html.escape( '<br>'), '<br>') + '</p><hr>'
+				to_ret += [ ( self._eles[ele]['distance'], tmp_blogpost)]
 		to_ret = sorted( to_ret)
+		if self._eles.keys() and self._eles[ele]['frmt'] == 'blogpost':
+			to_ret = list( reversed( to_ret))
 		to_rly_ret = []
 		for ele in to_ret:
 			to_rly_ret += [ ele[1]]

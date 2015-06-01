@@ -1,18 +1,12 @@
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="{{ url_for('static', filename='edit.js') }}"></script>
-</head>
-<body>
-	<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
-		<table><tr><td><p>Delete this element</p></td><td><dl>
-		</dl></td>
-		<td><input type=submit value="DELETE"></td></tr></table>
-	</form>
-	<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/">
-		<table><tr><td><p>Change a text element</p></td><td><dl>
-			<dt>Title:</dt><dd>{{ ele_change.to_add_title }}</dd>
-			<dt>Content:</dt><dd>{{ ele_change.to_add_content }}</dd>
-		</dl></td>
-		<td><input type=submit value="CHANGE"></td></tr></table>
-	</form>
-</body>
+<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
+	<table class="table"><tr><td><p>Delete this paragraph of text</p></td><td><dl>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="DELETE"></td></tr></table>
+</form>
+<form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/">
+	<table class="table"><tr><td><p>Change this paragraph of text</p></td><td><dl>
+		<dt>Title of paragraph:</dt><dd>{{ ele_change.to_add_title( class_ = "form-control") }}</dd>
+		<dt>Paragraph:</dt><dd>{{ ele_change.to_add_content( class_ = "form-control", rows = 10) }}</dd>
+	</dl></td>
+	<td><input class="btn btn-primary" type=submit value="CHANGE"></td></tr></table>
+</form>
