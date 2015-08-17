@@ -49,7 +49,13 @@ basic_auth = BasicAuth( app)
 ALLOWED_EXTENSIONS = set( [ 'png', 'jpg', 'jpeg', 'gif'])
 def allowed_file( filename):
 	return '.' in filename and \
-		filename.rsplit( '.', 1)[1] in ALLOWED_EXTENSIONS
+		filename.rsplit( '.', 1)[1] in ALLOWED_EXTENSION
+
+def edit_success( redir):
+	return render_template( 'bedit.html', edits = render_template( 'edit_success.html', redir = redir))
+
+def edit_failure( redir):
+	return render_template( 'bedit.html', edits = render_template( 'edit_failure.html', redir = redir))
 
 @app.route( '/')
 def route_index():
@@ -102,16 +108,19 @@ def edit_page_goto():
 def edit_page_create():
 	for char in request.form['to_create']:
 		if char not in string.ascii_letters + string.digits + ' ':
-			return redirect( '/edit/')
+			return edit_failure( '/edit/')
 	if request.form['to_create'] and 'edit' not in request.form['to_create'] and 'static' not in request.form['to_create']:
-		site.add( Page( site.name + request.form['to_create'].lower()))
-	return redirect( '/edit/')
+		try:
+			site.add( Page( site.name + request.form['to_create'].lower()))
+		except:
+			return edit_failure( '/edit/')
+	return edit_success( '/edit/')
 
 @app.route( '/edit/<path:page_name>/', methods=['POST', 'GET'])
 @basic_auth.required
 def edit_page_specific( page_name):
 	if page_name not in site.render().keys():
-		return redirect( '/edit/')
+		return edit_failure( '/edit/')
 	ele_add = ElementAddForm( request.form)
 	ele_add.to_add_title.data = ''
 	ele_add.to_add_content.data = ''
@@ -154,49 +163,64 @@ def edit_page_specific_goto( page_name):
 @app.route( '/edit/delete/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_delete( page_name):
-	site.remove( page_name)
-	return redirect( '/edit/')
+	try:
+		site.remove( page_name)
+	except:
+		edit_failure( '/edit/')
+	return edit_success( '/edit/')
 
 @app.route( '/edit/add/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_add( page_name):
-	if 'to_add_content' not in request.form:
-		ele_to_add = Element( 'image')
-	elif 'to_add_when' and 'to_add_where' in request.form:
-		ele_to_add = Element( 'event')
-	elif 'to_add_postdate' and 'to_add_posttime' in request.form:
-		ele_to_add = Element( 'blogpost')
-	else:
-		ele_to_add = Element( 'text')
-	ele_to_add.title = request.form['to_add_title']
-	if ele_to_add.frmt == 'text':
-		ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
-	elif ele_to_add.frmt == 'image':
-		image = request.files['to_add_image']
-		imagename = secure_filename( image.filename)
-		if not imagename:
-			return redirect( '/edit/' + page_name)
-		image.save( page_name + '/assets/' + imagename)
-		ele_to_add.content = imagename
-		ele_to_add.caption = request.form['to_add_caption'].replace( '\n', '<br>')
-	elif ele_to_add.frmt == 'event':
-		ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
-		ele_to_add.when = request.form['to_add_when'].replace( '\n', '<br>')
-		ele_to_add.where = request.form['to_add_where']
-	elif ele_to_add.frmt == 'blogpost':
-		ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
+	try:
+		if 'to_add_content' not in request.form:
+			ele_to_add = Element( 'image')
+		elif 'to_add_when' and 'to_add_where' in request.form:
+			ele_to_add = Element( 'event')
+		elif 'to_add_postdate' and 'to_add_posttime' in request.form:
+			ele_to_add = Element( 'blogpost')
+		else:
+			ele_to_add = Element( 'text')
+		ele_to_add.title = request.form['to_add_title']
+		if ele_to_add.frmt == 'text':
+			ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
+			if not ele_to_add.content:
+				return edit_failure( '/edit/' + page_name)
+		elif ele_to_add.frmt == 'image':
+			image = request.files['to_add_image']
+			imagename = secure_filename( image.filename)
+			if not imagename:
+				return edit_failure( '/edit/' + page_name)
+			image.save( page_name + '/assets/' + imagename)
+			ele_to_add.content = imagename
+			ele_to_add.caption = request.form['to_add_caption'].replace( '\n', '<br>')
+		elif ele_to_add.frmt == 'event':
+			ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
+			ele_to_add.when = request.form['to_add_when'].replace( '\n', '<br>')
+			ele_to_add.where = request.form['to_add_where']
+			if not ele_to_add.title or not ele_to_add.content or not ele_to_add.when or not ele_to_add.where:
+				return edit_failure( '/edit/' + page_name)
+		elif ele_to_add.frmt == 'blogpost':
+			ele_to_add.content = request.form['to_add_content'].replace( '\n', '<br>')
+			if not ele_to_add.title or not ele_to_add.content:
+				return edit_failure( '/edit/' + page_name)
 
-	ele_to_add.location = 'body'
-	site.render()[page_name].add( ele_to_add)
-	return redirect( '/edit/' + page_name)
+		ele_to_add.location = 'body'
+		site.render()[page_name].add( ele_to_add)
+	except:
+		return edit_failure( '/edit/' + page_name)
+	return edit_success( '/edit/' + page_name)
 
 @app.route( '/edit/remove/<path:page_name>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_remove( page_name):
-	if request.form['to_remove'] == '':
-		return redirect( '/edit/' + page_name)
-	site.render()[page_name].remove( request.form['to_remove'])
-	return redirect( '/edit/' + page_name)
+	try:
+		if request.form['to_remove'] == '':
+			return edit_failre( '/edit/' + page_name)
+		site.render()[page_name].remove( request.form['to_remove'])
+	except:
+		return edit_failure( '/edit/' + page_name)
+	return edit_success( '/edit/' + page_name)
 
 @app.route( '/edit/<path:page_name>/id/<ele_id>/', methods=['POST', 'GET'])
 @basic_auth.required
@@ -228,33 +252,39 @@ def edit_page_specific_element( page_name, ele_id):
 @app.route( '/edit/<path:page_name>/id/change/<ele_id>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_element_change( page_name, ele_id):
-	tmp_ele = Element( site.render()[page_name].retrieve( ele_id)['frmt'])
-	tmp_ele.load( site.render()[page_name].retrieve( ele_id))
-	tmp_ele.title = request.form['to_add_title']
-	if tmp_ele.frmt == 'text':
-		tmp_ele.content = request.form['to_add_content']
-	elif tmp_ele.frmt == 'image':
-		image = request.files['to_add_image']
-		if image:
-			imagename = secure_filename( image.filename)
-			image.save( page_name + '/assets/' + imagename)
-			tmp_ele.content = imagename
-		tmp_ele.caption = request.form['to_add_caption']
-	elif tmp_ele.frmt == 'event':
-		tmp_ele.content = request.form['to_add_content']
-		tmp_ele.when = request.form['to_add_when']
-		tmp_ele.where = request.form['to_add_where']
-	elif tmp_ele.frmt == 'blogpost':
-		tmp_ele.content = request.form['to_add_content']
-	site.render()[page_name].remove( ele_id, skeleton = True)
-	site.render()[page_name].add( tmp_ele, old = True)
-	return redirect( '/edit/' + page_name)
+	try:
+		tmp_ele = Element( site.render()[page_name].retrieve( ele_id)['frmt'])
+		tmp_ele.load( site.render()[page_name].retrieve( ele_id))
+		tmp_ele.title = request.form['to_add_title']
+		if tmp_ele.frmt == 'text':
+			tmp_ele.content = request.form['to_add_content']
+		elif tmp_ele.frmt == 'image':
+			image = request.files['to_add_image']
+			if image:
+				imagename = secure_filename( image.filename)
+				image.save( page_name + '/assets/' + imagename)
+				tmp_ele.content = imagename
+			tmp_ele.caption = request.form['to_add_caption']
+		elif tmp_ele.frmt == 'event':
+			tmp_ele.content = request.form['to_add_content']
+			tmp_ele.when = request.form['to_add_when']
+			tmp_ele.where = request.form['to_add_where']
+		elif tmp_ele.frmt == 'blogpost':
+			tmp_ele.content = request.form['to_add_content']
+		site.render()[page_name].remove( ele_id, skeleton = True)
+		site.render()[page_name].add( tmp_ele, old = True)
+	except:
+		return edit_failure( '/edit/' + page_name)
+	return edit_success( '/edit/' + page_name)
 
 @app.route( '/edit/<path:page_name>/id/remove/<ele_id>/', methods=['POST'])
 @basic_auth.required
 def edit_page_specific_element_remove( page_name, ele_id):
-	site.render()[page_name].remove( ele_id)
-	return redirect( '/edit/' + page_name)
+	try:
+		site.render()[page_name].remove( ele_id)
+	except:
+		return edit_failure( '/edit/' + page_name)
+	return edit_success( '/edit/' + page_name)
 
 if __name__ == '__main__':
 	app.run( host = '0.0.0.0', debug = True)

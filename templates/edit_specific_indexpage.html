@@ -1,3 +1,4 @@
+<h1>Now editing page name: "{{ page_name }}" (The home page)</h1>
 <h1>You may add a paragraph of text OR you may upload an image.</h1>
 <form method=post action="/edit/add/{{ page_name }}/">
 	<table class="table"><tr><td><p>Add a paragraph of text</p></td><td><dl>
@@ -12,7 +13,7 @@
 		<dt>Title:</dt><dd>{{ ele_add_image.to_add_title( class_ = "form-control") }}</dd>
 		<dt>Image to upload:</dt><dd>{{ ele_add_image.to_add_image( class_ = "form-control") }}</dd>
 		<dt>Caption:</dt><dd>{{ ele_add_image.to_add_caption( class_ = "form-control", rows = 10) }}</dd>
-	</dl></td>
+	</dl><dd>An image is REQUIRED.  The title and caption are OPTIONAL.</td>
 	<td><input class="btn btn-primary" type=submit value="UPLOAD"></td></tr></table>
 </form>
 <form method=post action="/edit/goto/{{ page_name }}/">

@@ -1,8 +1,9 @@
+<h1>Now editing page name: "{{ page_name }}" (The blog)</h1>
 <form method=post action="/edit/add/{{ page_name }}/">
 	<table class="table"><tr><td><p>Post a new blog</p></td><td><dl>
 		<dt>Title:</dt><dd>{{ ele_add_blogpost.to_add_title( class_ = "form-control") }}</dd>
 		<dt>Write your blog here:</dt><dd>{{ ele_add_blogpost.to_add_content( class_ = "form-control", rows = 10) }}{{ ele_add_blogpost.to_add_posttime( class_ = "form-control") }}{{ ele_add_blogpost.to_add_postdate( class_ = "form-control") }}</dd>
-	</dl></td>
+	</dl><dd>The blog title is REQUIRED.  You also need to have something written for your blog to upload!</td>
 	<td><input class="btn btn-primary" type=submit value="ADD"></td></tr></table>
 </form>
 <form method=post action="/edit/goto/{{ page_name }}/">

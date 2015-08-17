@@ -1,8 +1,3 @@
-<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
-	<table class="table"><tr><td><p>Delete this event</p></td><td><dl>
-	</dl></td>
-	<td><input class="btn btn-danger" type=submit value="DELETE"></td></tr></table>
-</form>
 <form method=post action="/edit/{{ page_name }}/id/change/{{ ele_id }}/" enctype=multipart/form-data>
 	<table class="table"><tr><td><p>Change the event information</p></td><td><dl>
 		<dt>Event Title:</dt><dd>{{ ele_change.to_add_title( class_ = "form-control") }}</dd>
@@ -11,4 +6,9 @@
 		<dt>Event Description:</dt><dd>{{ ele_change.to_add_content( class_ = "form-control", rows = 10) }}</dd>
 	</dl></td>
 	<td><input class="btn btn-primary" type=submit value="CHANGE"></td></tr></table>
+</form>
+<form method=post action="/edit/{{ page_name }}/id/remove/{{ ele_id }}/">
+	<table class="table"><tr><td><p>Delete this event</p></td><td><dl>
+	</dl></td>
+	<td><input class="btn btn-danger" type=submit value="DELETE"></td></tr></table>
 </form>
